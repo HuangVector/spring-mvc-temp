@@ -1,1 +1,0 @@
-这个模板用于创建idea的maven web项目
