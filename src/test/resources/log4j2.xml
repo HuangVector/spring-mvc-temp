@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 设置log4j2的自身log级别为warn -->
 <!-- OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
 <Configuration status="WARN">
+
     <Appenders>
         <!-- 控制台输出 -->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%t] %-5p %c{1}:%L - %msg%n"/>
         </Console>
         <!--
-        <RollingFile name="RollingFileDebug" fileName="${web:rootDir}/logs/debug.log"
-                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileDebug" fileName="logs/debug.log"
+                     filePattern="logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="DEBUG"/>
                 <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -18,12 +20,12 @@
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="20" />
+            <DefaultRolloverStrategy max="20" min="0"/>
         </RollingFile>
-        -->
-        <!--
-        <RollingFile name="RollingFileInfo" fileName="${web:rootDir}/logs/info.log"
-                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+    -->
+<!--
+        <RollingFile name="RollingFileInfo" fileName="logs/info.log"
+                     filePattern="logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="INFO"/>
                 <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -33,11 +35,11 @@
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="20" />
+            <DefaultRolloverStrategy max="20" min="0"/>
         </RollingFile>
-        -->
-        <RollingFile name="RollingFileWarn" fileName="${web:rootDir}/logs/warn.log"
-                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+-->
+        <RollingFile name="RollingFileWarn" fileName="logs/warn.log"
+                     filePattern="logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="WARN"/>
                 <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -47,20 +49,22 @@
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="20"/>
+            <DefaultRolloverStrategy max="20" />
         </RollingFile>
-        <RollingFile name="RollingFileError" fileName="${web:rootDir}/logs/error.log"
-                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+
+        <RollingFile name="RollingFileError" fileName="logs/error.log"
+                     filePattern="logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="ERROR"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="20" />
+            <DefaultRolloverStrategy max="20"/>
         </RollingFile>
-        <RollingFile name="RollingFileFatal" fileName="${web:rootDir}/logs/fatal.log"
-                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd}-%i.log">
+
+        <RollingFile name="RollingFileFatal" fileName="logs/fatal.log"
+                     filePattern="logs/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="FATAL"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
@@ -68,19 +72,22 @@
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20" />
-        </RollingFile>-->
+        </RollingFile>
     </Appenders>
     <Loggers>
-
+        <!--过滤掉第三方一些无用的DEBUG信息-->
+        <!--
         <logger name="org.springframework.core" level="info"/>
         <logger name="org.springframework.beans" level="info"/>
         <logger name="org.springframework.context" level="info"/>
-        <logger name="org.springframework.web" level="info"/>
+        <logger name="org.springframework.web" level="info"/>-->
         <logger name="org.hibernate" level="info"/>
+        <logger name="org.springframework" level="info"/>
         <Root level="all">
             <appender-ref ref="Console"/>
-            <!--<appender-ref ref="RollingFileDebug"/>-->
-            <!--<appender-ref ref="RollingFileInfo"/>-->
+            <!--
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileInfo"/>-->
             <appender-ref ref="RollingFileWarn"/>
             <appender-ref ref="RollingFileError"/>
             <appender-ref ref="RollingFileFatal"/>
