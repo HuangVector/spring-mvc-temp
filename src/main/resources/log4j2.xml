@@ -6,7 +6,6 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%t] %-5p %c{1}:%L - %msg%n"/>
         </Console>
-        <!--
         <RollingFile name="RollingFileDebug" fileName="${web:rootDir}/logs/debug.log"
                      filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
             <Filters>
@@ -15,13 +14,11 @@
             </Filters>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20" />
         </RollingFile>
-        -->
-        <!--
         <RollingFile name="RollingFileInfo" fileName="${web:rootDir}/logs/info.log"
                      filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
@@ -35,7 +32,6 @@
             </Policies>
             <DefaultRolloverStrategy max="20" />
         </RollingFile>
-        -->
         <RollingFile name="RollingFileWarn" fileName="${web:rootDir}/logs/warn.log"
                      filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
             <Filters>
@@ -44,7 +40,7 @@
             </Filters>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1"/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
@@ -54,7 +50,7 @@
             <ThresholdFilter level="ERROR"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1"/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20" />
@@ -64,20 +60,21 @@
             <ThresholdFilter level="FATAL"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1"/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20" />
-        </RollingFile>-->
+        </RollingFile>
     </Appenders>
     <Loggers>
-
+<!--
         <logger name="org.springframework.core" level="info"/>
         <logger name="org.springframework.beans" level="info"/>
         <logger name="org.springframework.context" level="info"/>
-        <logger name="org.springframework.web" level="info"/>
+        <logger name="org.springframework.web" level="info"/>-->
+        <logger name="org.springframework" level="info"/>
         <logger name="org.hibernate" level="info"/>
-        <Root level="all">
+        <Root level="WARN">
             <appender-ref ref="Console"/>
             <!--<appender-ref ref="RollingFileDebug"/>-->
             <!--<appender-ref ref="RollingFileInfo"/>-->

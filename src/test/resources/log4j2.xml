@@ -8,8 +8,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%t] %-5p %c{1}:%L - %msg%n"/>
         </Console>
-        <!--
-        <RollingFile name="RollingFileDebug" fileName="logs/debug.log"
+        <RollingFile name="RollingFileDebug" fileName="/test/logs/debug.log"
                      filePattern="logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="DEBUG"/>
@@ -20,9 +19,8 @@
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="20" min="0"/>
+            <DefaultRolloverStrategy max="20" />
         </RollingFile>
-    -->
 <!--
         <RollingFile name="RollingFileInfo" fileName="logs/info.log"
                      filePattern="logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
@@ -38,7 +36,7 @@
             <DefaultRolloverStrategy max="20" min="0"/>
         </RollingFile>
 -->
-        <RollingFile name="RollingFileWarn" fileName="logs/warn.log"
+        <RollingFile name="RollingFileWarn" fileName="/test/logs/warn.log"
                      filePattern="logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="WARN"/>
@@ -52,7 +50,7 @@
             <DefaultRolloverStrategy max="20" />
         </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="logs/error.log"
+        <RollingFile name="RollingFileError" fileName="/test/logs/error.log"
                      filePattern="logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="ERROR"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
@@ -63,7 +61,7 @@
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
 
-        <RollingFile name="RollingFileFatal" fileName="logs/fatal.log"
+        <RollingFile name="RollingFileFatal" fileName="/test/logs/fatal.log"
                      filePattern="logs/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="FATAL"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
@@ -76,11 +74,6 @@
     </Appenders>
     <Loggers>
         <!--过滤掉第三方一些无用的DEBUG信息-->
-        <!--
-        <logger name="org.springframework.core" level="info"/>
-        <logger name="org.springframework.beans" level="info"/>
-        <logger name="org.springframework.context" level="info"/>
-        <logger name="org.springframework.web" level="info"/>-->
         <logger name="org.hibernate" level="info"/>
         <logger name="org.springframework" level="info"/>
         <Root level="all">
