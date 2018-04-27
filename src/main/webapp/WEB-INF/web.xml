@@ -20,6 +20,23 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!-- 编码过滤器 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
   <!-- DispatcherServlet ,Spring MVC的核心-->
   <servlet>
     <servlet-name>mvc-dispatcher</servlet-name>
@@ -36,6 +53,10 @@
         <!-- mvc-dispatcher拦截所有的请求 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+     <!-- Spring 刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
      <!-- 设置首页 -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

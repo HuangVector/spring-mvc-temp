@@ -16,15 +16,109 @@
     <mvc:annotation-driven/>
     <!--
         <mvc:resources mapping="/favicon.ico" location="/favicon.ico" /> -->
-    <!-- 配置json视图 -->
+    <mvc:view-resolvers>
+        <!--<ref bean="contentNegotiatingViewResolver"/>-->
+        <mvc:content-negotiation>
+            <mvc:default-views>
+                <ref bean="jsonView"/>
+
+                <ref bean="marshallingView"/>
+            </mvc:default-views>
+        </mvc:content-negotiation>
+        <ref bean="freeMarkerViewResolver"/>
+        <ref bean="jspViewResolver"/>
+    </mvc:view-resolvers>
+
+
+    <!-- xml 视图 -->
+    <bean id="marshallingView" name="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+        <constructor-arg>
+            <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+                 <property name="packagesToScan">
+                    <list>
+                        <value>cn.vector.**.model</value>
+                    </list>
+                </property>
+                <!--
+                <property name="classesToBeBound">
+                    <list>
+                        <value>cn.vector.demo.model.User</value>
+                    </list>
+                </property>
+                -->
+            </bean>
+        </constructor-arg>
+        <property name="contentType" value="application/xml;charset=UTF-8" />
+    </bean>
+    <!-- json 视图 -->
+  <bean id="jsonView" name="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+        <property name="encoding">
+            <value type="com.fasterxml.jackson.core.JsonEncoding">UTF8</value>
+        </property>
+        <property name="extractValueFromSingleKeyModel" value="true"></property>
+        <property name="contentType" value="application/json;charset=UTF-8" />
+    </bean>
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <!-- 用于开启 /userinfo/123?format=json 的支持 默认是true -->
+        <property name="favorParameter" value="true" />
+        <!-- 用于关闭 /userinfo/123.json 的支持 默认是true -->
+        <property name="favorPathExtension" value="true" />
+        <!-- 设置为true以忽略对Accept Header的支持 -->
+        <property name="ignoreAcceptHeader" value="true" />
+        <!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
+        <property name="defaultContentType" value="text/html" />
         <property name="mediaTypes">
-            <value>
-                json=application/json
-                xml=application/xml
-            </value>
+            <map>
+                <entry key="json" value="application/json"/>
+                <entry key="xml" value="application/xml"/>
+            </map>
         </property>
+    </bean>
+
+    <!-- freemarker 视图 -->
+    <bean id="freeMarkerViewResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="order" value="2"/>
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="allowSessionOverride" value="true"/>
+        <property name="allowRequestOverride" value="true"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="requestContextAttribute" value="request"/>
+    </bean>
+    <bean id="freeMarkerConfigurer"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">1</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="datetime_format">yyyy-MM-dd</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="number_format">#.##</prop>
+            </props>
+        </property>
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="xml_escape" value-ref="fmXmlEscape"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+    <!-- jsp视图-->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="4"/>
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/jsps/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -42,7 +136,7 @@
     </bean>
     <bean id="stringHttpMessageConverter"
           class="org.springframework.http.converter.StringHttpMessageConverter"/>
-    <!--解决IE浏览器json文件下载和json数据中午乱码的问题-->
+    <!--解决IE浏览器json文件下载和json数据中乱码的问题-->
     <bean id="mappingJackson2HttpMessageConverter"
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes">
@@ -59,79 +153,13 @@
         <property name="modulesToInstall" value="com.fasterxml.jackson.databind.module.SimpleModule"/>
     </bean>
     <!--
-    <bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
-          p:indentOutput="true"
-          p:simpleDateFormat="yyyy-MM-dd"
-          p:modulesToInstall="com.fasterxml.jackson.module.paramnames.ParameterNamesModule"/>
+          p:modulesToInstall="com.fasterxml.jackson.module.paramnames.ParameterNamesModule"
     -->
-    <mvc:view-resolvers>
-
-        <mvc:content-negotiation>
-
-            <mvc:default-views>
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
-            </mvc:default-views>
-        </mvc:content-negotiation>
-        <mvc:freemarker cache-views="true"/>
-        <!--
-        <mvc:jsp/>
-        -->
-    </mvc:view-resolvers>
-    <!-- 配置Freemarker视图 -->
-    <bean id="freeMarkerConfigurer"
-          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
-        <property name="defaultEncoding" value="utf-8"/>
-        <property name="freemarkerSettings">
-            <props>
-                <prop key="template_update_delay">1</prop>
-                <prop key="locale">zh_CN</prop>
-                <prop key="datetime_format">yyyy-MM-dd</prop><!-- 时间格式化 -->
-                <prop key="date_format">yyyy-MM-dd</prop>
-                <prop key="number_format">#.##</prop>
-            </props>
-        </property>
-        <property name="freemarkerVariables">
-            <map>
-                <entry key="xml_escape" value-ref="fmXmlEscape"/>
-            </map>
-        </property>
-    </bean>
-    <!--
-    <bean id="freemarkConfig" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="classpath:freemark.properties"/>
-    </bean>
-    -->
-    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
-    <bean id="freeMarkerViewResolver"
-          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
-        <property name="order" value="1"/>
-        <property name="cache" value="true"/>
-        <property name="prefix" value=""/>
-        <property name="suffix" value=".ftl"/>
-        <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="allowSessionOverride" value="true"/>
-        <property name="allowRequestOverride" value="true"/>
-        <property name="exposeSpringMacroHelpers" value="true"/>
-        <property name="exposeRequestAttributes" value="true"/>
-        <property name="exposeSessionAttributes" value="true"/>
-        <property name="requestContextAttribute" value="request"/>
-    </bean>
-    <!-- 配置jsp视图-->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="order" value="3"/>
-        <property name="viewClass"
-                  value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/jsps/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
     <!--200*1024*1024即200M resolveLazily属性启用是为了推迟文件解析，以便捕获文件大小异常 -->
-    <!--
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="209715200" />
         <property name="defaultEncoding" value="UTF-8" />
         <property name="resolveLazily" value="true" />
-    </bean>-->
+    </bean>
 </beans>

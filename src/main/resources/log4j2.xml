@@ -74,7 +74,7 @@
         <logger name="org.springframework.web" level="info"/>-->
         <logger name="org.springframework" level="info"/>
         <logger name="org.hibernate" level="info"/>
-        <Root level="WARN">
+        <Root level="ALL">
             <appender-ref ref="Console"/>
             <!--<appender-ref ref="RollingFileDebug"/>-->
             <!--<appender-ref ref="RollingFileInfo"/>-->
