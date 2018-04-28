@@ -17,7 +17,7 @@ import java.util.List;
  * @Author : Huang Vector ( hgw )
  * @Date : 2018-4-16 14:03
  */
-//@Repository("baseDao")
+@Repository("baseDao")
 public class BaseDaoImpl<T, ID extends Serializable> extends HibernateDaoSupport implements BaseDao<T, ID> {
     private Logger log = LoggerFactory.getLogger(this.getClass().getName());
     private Class<T> persistentClass;

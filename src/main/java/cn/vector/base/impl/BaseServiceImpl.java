@@ -15,7 +15,7 @@ import java.util.List;
  * @Author : Huang Vector ( hgw )
  * @Date : 2018-4-16 14:35
  */
-//@Service("baseService")
+@Service("baseService")
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public abstract class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {
     private Logger log = LoggerFactory.getLogger(this.getClass().getName());
