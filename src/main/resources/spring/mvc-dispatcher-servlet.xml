@@ -42,7 +42,7 @@
                 <!--
                 <property name="classesToBeBound">
                     <list>
-                        <value>cn.vector.demo.model.User</value>
+                        <value>cn.vector.demo.model.UserOldOld</value>
                     </list>
                 </property>
                 -->

@@ -78,6 +78,8 @@
 	<!-- 支持 @AspectJ 标记 <aop:aspectj-autoproxy/> -->
 
 	<!-- 以 @Transactional 标注来定义事务 -->
+	<!--
 	<tx:annotation-driven proxy-target-class="true" />
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	-->
 </beans>
