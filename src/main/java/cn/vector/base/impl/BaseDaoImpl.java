@@ -208,7 +208,15 @@ public class BaseDaoImpl<T, ID extends Serializable> extends HibernateDaoSupport
         return q.executeUpdate();
     }
 
-
+    /**
+     * 列出数据库中所有实体对象
+     */
+    public List<T> findAll() {
+        log.debug("列出数据库中所有实体对象");
+        List<T> list = this.getHibernateTemplate().loadAll(this.getPersistentClass());
+        org.hibernate.Hibernate.initialize(list);
+        return list;
+    }
 //    /**
 //     * 通过id获取实体对象
 //     */
@@ -222,15 +230,7 @@ public class BaseDaoImpl<T, ID extends Serializable> extends HibernateDaoSupport
 //        }
 //    }
 
-//    /**
-//     * 列出数据库中所有实体对象
-//     */
-//    public List<T> findAll() {
-//        log.debug("列出数据库中所有实体对象");
-//        List<T> list = this.getHibernateTemplate().loadAll(this.getPersistentClass());
-//        org.hibernate.Hibernate.initialize(list);
-//        return list;
-//    }
+
 
 //    /**
 //     * 通过表中字段查询

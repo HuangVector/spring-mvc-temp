@@ -173,4 +173,5 @@ public interface BaseDao<T, ID extends Serializable> {
      * @return
      */
      Integer executeHql(String hql, List<Object> param);
+      List<T> findAll();
 }
